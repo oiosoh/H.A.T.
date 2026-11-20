@@ -11,3 +11,26 @@ const principles=[
 ['공익성','개인의 이익을 넘어 사회 전체에 미치는 영향과 공동의 이익을 고려해야 합니다.','기술의 활용이 사회에 가져올 장기적인 이익과 부담은 무엇인가요?']];
 document.querySelectorAll('.principle').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.principle').forEach(x=>x.classList.remove('active'));btn.classList.add('active');const p=principles[Number(btn.dataset.i)];document.querySelector('#p-title').textContent=p[0];document.querySelector('#p-desc').textContent=p[1];document.querySelector('#p-question').textContent=p[2];}));
 document.querySelectorAll('.step').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));btn.classList.add('active');}));
+
+
+// First-visit brochure opening. Add ?intro=1 to replay the animation while testing.
+(() => {
+  const intro = document.getElementById('brochureIntro');
+  if (!intro) return;
+  const key = 'hatBrochureIntroSeen';
+  const forceReplay = true;
+  let seen = false;
+  try { seen = localStorage.getItem(key) === 'yes'; } catch (e) {}
+  if (seen && !forceReplay) {
+    intro.remove();
+    return;
+  }
+  const closeIntro = () => {
+    intro.classList.add('is-leaving');
+    try { localStorage.setItem(key, 'yes'); } catch (e) {}
+    window.setTimeout(() => intro.remove(), 800);
+  };
+  const skip = document.getElementById('skipIntro');
+  if (skip) skip.addEventListener('click', closeIntro);
+  window.setTimeout(closeIntro, 3900);
+})();
